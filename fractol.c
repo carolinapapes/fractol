@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 16:34:21 by capapes           #+#    #+#             */
-/*   Updated: 2024/05/24 15:48:10 by capapes          ###   ########.fr       */
+/*   Updated: 2024/05/24 18:42:17 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,6 @@ void	ft_mlx_pixel_put(t_data *data, int x, int y, int color)
 
 void	ft_set_canvas(t_transform *canvas, int set)
 {
-	canvas->translate_y = canvas->translate_origin_y * WIN_SIZE;
-	canvas->translate_x = canvas->translate_origin_x * WIN_SIZE;
-	canvas->scale = canvas->zoom / WIN_SIZE;
 	if (set == 0)
 		canvas->fn = mandelbrot_eq;
 	else if (set == 1)
@@ -43,7 +40,6 @@ void	drawgrid(t_vars *vars)
 	int		x;
 	int		y;
 	int		i;
-	
 	y = -1;
 	while (++y < WIN_SIZE)
 	{
@@ -51,9 +47,9 @@ void	drawgrid(t_vars *vars)
 		while (++x < WIN_SIZE)
 		{
 			if (x % (WIN_SIZE / 10) == 0)
-				ft_mlx_pixel_put(&(vars->img), x, y, 0x00000000);
+				ft_mlx_pixel_put(&(vars->img), x, y, 0x00333333);
 			if (y % (WIN_SIZE / 10) == 0)
-				ft_mlx_pixel_put(&(vars->img), x, y, 0x00000000);
+				ft_mlx_pixel_put(&(vars->img), x, y, 0x00333333);
 		}
 	}
 	i = -6;
@@ -86,7 +82,7 @@ void	get_fractol(t_vars *vars)
 			if (i == MAX_ITER)
 				ft_mlx_pixel_put(&(vars->img), x, y, 0x00FFFFFF);
 			else
-				ft_mlx_pixel_put(&(vars->img), x, y, 0x0000FFFF);
+				ft_mlx_pixel_put(&(vars->img), x, y, 0x00000000);
 		}
 	}
 	drawgrid(vars);
@@ -115,9 +111,9 @@ int	main(void)
 	vars.win = mlx_new_window(vars.mlx, WIN_SIZE, WIN_SIZE, "Fract-ol");
 	if (vars.win == NULL)
 		ft_putstr_fd("error", 2);
-	vars.canvas.zoom = 4;
-	vars.canvas.translate_origin_x = 0.66;
-	vars.canvas.translate_origin_y = 0.5;
+	vars.canvas.pixel_size = 4. / WIN_SIZE;
+	vars.canvas.origin_x = -0.66 * WIN_SIZE * vars.canvas.pixel_size;
+	vars.canvas.origin_y = 0.5 * WIN_SIZE * vars.canvas.pixel_size;
 	ft_set_canvas(&vars.canvas, 0);
 	get_fractol(&vars);
 	mlx_put_image_to_window(vars.mlx, vars.win, vars.img.img, 0, 0);

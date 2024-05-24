@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 17:32:58 by capapes           #+#    #+#             */
-/*   Updated: 2024/05/24 15:48:31 by capapes          ###   ########.fr       */
+/*   Updated: 2024/05/24 18:29:10 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,10 @@ typedef struct s_transform
 	double		translate_y;
 	double		translate_origin_x;
 	double		translate_origin_y;
+	double		pixel_size;
+	double		origin_x;
+	double		origin_y;
 	double		scale;
-	double		zoom;
 	void		(*fn)(double y0, double x0, double *y, double *x);
 }	t_transform;
 

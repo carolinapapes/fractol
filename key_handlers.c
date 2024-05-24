@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 15:47:31 by capapes           #+#    #+#             */
-/*   Updated: 2024/05/23 16:22:53 by capapes          ###   ########.fr       */
+/*   Updated: 2024/05/24 17:24:36 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ void	ft_close(t_vars *vars)
 void	ft_move(int key_code, t_vars *vars)
 {
 	if (key_code == KEY_UP)
-		vars->canvas.translate_origin_y += 0.01;
+		vars->canvas.origin_y += vars->canvas.origin_y / 10;
 	if (key_code == KEY_DOWN)
-		vars->canvas.translate_origin_y -= 0.01;
+		vars->canvas.origin_y -= vars->canvas.origin_y / 10;
 	if (key_code == KEY_LEFT)
-		vars->canvas.translate_origin_x += 0.01;
+		vars->canvas.origin_x += vars->canvas.origin_x / 10;
 	if (key_code == KEY_RIGHT)
-		vars->canvas.translate_origin_x -= 0.01;
+		vars->canvas.origin_x -= vars->canvas.origin_x / 10;
 	ft_set_canvas(&(vars->canvas), 0);
 	get_fractol(vars);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
