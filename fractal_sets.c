@@ -6,7 +6,7 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 12:12:46 by capapes           #+#    #+#             */
-/*   Updated: 2024/05/22 18:10:16 by capapes          ###   ########.fr       */
+/*   Updated: 2024/05/24 15:13:46 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,10 @@ int	is_mandelbrot_set(double x0, double y0, t_transform canvas)
 	double	y;
 	int		i;
 
-	x0 = x0 * canvas.scale - canvas.translate_x;
-	y0 = y0 * canvas.scale - canvas.translate_y;
+	// x0 = x0 * canvas.scale - canvas.translate_x;
+	// y0 = y0 * canvas.scale - canvas.translate_y;
+	x0 = (x0 - canvas.translate_x) * canvas.scale;
+	y0 = (y0 - canvas.translate_y) * canvas.scale;
 	x = x0;
 	y = y0;
 	i = -1;

@@ -1,7 +1,7 @@
 # Compiler and compiler flags
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
-SRC = fractol.c fractal_sets.c
+CFLAGS = -Wall -Wextra -Werror -g -Ofast
+SRC = fractol.c fractal_sets.c key_handlers.c mouse_handlers.c
 BUILD_DIR = ./build
 
 # LIBS
@@ -63,3 +63,7 @@ clean:
 
 fclean: clean
 	@rm -f $(NAME)
+
+re: fclean all
+
+.PHONY: re fclean clean all make_libs
