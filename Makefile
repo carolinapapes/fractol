@@ -19,11 +19,11 @@ LIBFT_LINK	= -L${LIBFT_PATH} -lft
 
 
 OBJ := $(SRC:%.c=$(BUILD_DIR)/%.o)
-DPS := $(OBJ:.o=.d)  # Correct dependency file generation
+DPS := $(SRC:%.c=$(BUILD_DIR)/%.d) 
 
-PREQ = Makefile
+PREQ = Makefile 
 NAME = fractol
-CPPFLAGS := -MMD -MP
+DEFLAGS := -MMD -MP
 
 #Colors
 DEF_COLOR = \033[0;39m
@@ -34,7 +34,7 @@ GREEN = \033[0;92m
 # Functions
 define make_lib
     @echo "Making $1..."
-    @make -C $2 >/dev/null 2>&1
+    @make -C $2 
     @echo "$(GREEN)📚completed		$1$(DEF_COLOR)"
 endef
 
@@ -44,12 +44,12 @@ make_libs:
 	$(call make_lib,$(MLX_NAME),$(MLX_PATH))
 	$(call make_lib,$(LIBFT_NAME),$(LIBFT_PATH))
 
-$(NAME): $(OBJ)
-	@$(CC) $(CFLAGS) $(CPPFLAGS) $(OBJ) -o $(NAME) $(MLX_LINK) $(LIBFT_LINK)
+$(NAME): $(OBJ) ${LIBFT_PATH}/libft.a
+	@$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(MLX_LINK) $(LIBFT_LINK)
 	@echo "$(GREEN)📚completed		$(NAME)$(DEF_COLOR)"
 
-$(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)
-	@$(CC) $(CFLAGS) -c $< -o $@
+$(BUILD_DIR)/%.o: %.c $(PREQ) | $(BUILD_DIR) 
+	@$(CC) $(CFLAGS) $(DEFLAGS) -c $< -o $@
 	@echo "$(GRAY)⏳compiling		$<$(DEF_COLOR)"
 	
 $(BUILD_DIR):
@@ -65,5 +65,7 @@ fclean: clean
 	@rm -f $(NAME)
 
 re: fclean all
+
+-include $(DPS)
 
 .PHONY: re fclean clean all make_libs
