@@ -14,6 +14,7 @@
 #include "./libs/minilibx_opengl/mlx.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "macros.h"
 
 void	ft_close(t_vars *vars)
 {

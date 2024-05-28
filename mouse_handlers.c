@@ -20,8 +20,8 @@ void	ft_draw_mousewheel(int x, int y, t_vars *vars)
 	i = -6;
 	while (++i < 6)
 	{
-		ft_mlx_pixel_put(&(vars->img), x + i, y, 0x00555555);
-		ft_mlx_pixel_put(&(vars->img), x, y + i, 0x00555555);
+		ft_mlx_pixel_put(vars, x + i, y, 0x00555555);
+		ft_mlx_pixel_put(vars, x, y + i, 0x00555555);
 	}
 }
 
@@ -29,7 +29,6 @@ int	ft_mouse_handler(int button, int x, int y, t_vars *vars)
 {
 	double	mouse_x;
 	double	mouse_y;
-
 
 	mouse_x = (double)x * vars->canvas.pixel_size + vars->canvas.origin_x;
 	mouse_y = (double)y * vars->canvas.pixel_size - vars->canvas.origin_y;

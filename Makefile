@@ -1,7 +1,7 @@
 # Compiler and compiler flags
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g -Ofast
-SRC = fractol.c fractal_sets.c key_handlers.c mouse_handlers.c
+SRC = fractol.c fractal_sets.c key_handlers.c mouse_handlers.c viewport.c
 BUILD_DIR = ./build
 
 # LIBS
