@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   palette.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/24 20:06:02 by capapes           #+#    #+#             */
-/*   Updated: 2024/05/28 12:24:10 by capapes          ###   ########.fr       */
+/*   Created: 2024/05/28 15:02:42 by capapes           #+#    #+#             */
+/*   Updated: 2024/05/28 18:29:08 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "fractol.h"
+#include "viewport_defs.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+int	palette_get(int palette, int iteration)
 {
-	size_t	i;
-
-	i = 0;
-	if (n == 0)
-		return (0);
-	while (s1[i] != '\0' && s1[i] == s2[i] && i < n - 1)
-		i++;
-	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+	if (palette == 0)
+		return (g_palette_summer[iteration % 10]);
+	if (palette == 1)
+		return (g_palette_cosmic[iteration % 10]);
+	return (iteration * 0x00050505);
 }

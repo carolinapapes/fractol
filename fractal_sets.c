@@ -6,15 +6,14 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 12:12:46 by capapes           #+#    #+#             */
-/*   Updated: 2024/05/27 20:09:07 by capapes          ###   ########.fr       */
+/*   Updated: 2024/05/28 17:57:27 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 #include "math.h"
-#include <stdio.h>
 
-int	mandelbrot_eq(double *y0, double *x0, double *y, double *x)
+int	eq_mandelbrot(double *y0, double *x0, double *y, double *x)
 {
 	double	aux;
 
@@ -24,7 +23,7 @@ int	mandelbrot_eq(double *y0, double *x0, double *y, double *x)
 	return (*x * *x + *y * *y < 4);
 }
 
-int julia_eq(double *y0, double *x0, double *y, double *x)
+int	eq_julia(double *y0, double *x0, double *y, double *x)
 {
 	double	aux;
 
@@ -36,7 +35,7 @@ int julia_eq(double *y0, double *x0, double *y, double *x)
 	return (*x * *x + *y * *y < 4);
 }
 
-int	mandelbar_eq(double *y0, double *x0, double *y, double *x)
+int	eq_mandelbar(double *y0, double *x0, double *y, double *x)
 {
 	double	aux;
 
@@ -46,10 +45,7 @@ int	mandelbar_eq(double *y0, double *x0, double *y, double *x)
 	return (*x * *x + *y * *y < 4);
 }
 
-
-
-
-int ft_julia_sin(double *y0, double *x0, double *y, double *x)
+int	eq_julia_sin(double *y0, double *x0, double *y, double *x)
 {
 	double	aux;
 
@@ -58,20 +54,21 @@ int ft_julia_sin(double *y0, double *x0, double *y, double *x)
 	aux = sin(*x) * cosh(*y) + *y0;
 	*x = cos(*x) * sinh(*y) + *x0;
 	*y = aux;
-	return (*y * *y < 2500);
+	return (fabs(*y) < 50);
 }
-int	is_mandelbrot_set(double x0, double y0, t_transform canvas)
+
+int	fractal_get(double x0, double y0, t_viewport viewport)
 {
 	double	x;
 	double	y;
 	int		i;
 
-	x0 = x0 * canvas.pixel_size + canvas.origin_x;
-	y0 = y0 * canvas.pixel_size - canvas.origin_y;
+	x0 = x0 * viewport.pixel_size + viewport.origin_x;
+	y0 = y0 * viewport.pixel_size - viewport.origin_y;
 	x = x0;
 	y = y0;
 	i = 0;
-	while ((canvas.fn)(&y0, &x0, &y, &x) && ++i < canvas.iters)
+	while ((viewport.fn)(&y0, &x0, &y, &x) && ++i < viewport.iters)
 		;
 	return (i);
 }

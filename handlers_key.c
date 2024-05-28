@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   key_handlers.c                                     :+:      :+:    :+:   */
+/*   handlers_key.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 15:47:31 by capapes           #+#    #+#             */
-/*   Updated: 2024/05/27 18:58:49 by capapes          ###   ########.fr       */
+/*   Updated: 2024/05/28 16:30:53 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,47 +15,58 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "macros.h"
+#include "viewport_defs.h"
 
-void	ft_close(t_vars *vars)
+void	hkey_move(int key_code, t_vars *vars)
 {
-	mlx_destroy_window(vars->mlx, vars->win);
-	printf("\n EXIT PROGRAM\n");
-	exit(0);
-	return ;
-}
+	double	delta;
 
-void	ft_move(int key_code, t_vars *vars)
-{
+	delta = vars->viewport.pixel_size * 10;
 	if (key_code == KEY_UP)
-		vars->canvas.origin_y -=  vars->canvas.pixel_size * 10;
+		vars->viewport.origin_y -= delta;
 	if (key_code == KEY_DOWN)
-		vars->canvas.origin_y +=  vars->canvas.pixel_size * 10;
+		vars->viewport.origin_y += delta;
 	if (key_code == KEY_LEFT)
-		vars->canvas.origin_x +=  vars->canvas.pixel_size * 10;
+		vars->viewport.origin_x += delta;
 	if (key_code == KEY_RIGHT)
-		vars->canvas.origin_x -=  vars->canvas.pixel_size * 10;
-	get_fractol(vars);
-	mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
+		vars->viewport.origin_x -= delta;
+	fractal_new(vars);
 }
 
-void	ft_handle_iters(int key_code,  t_vars *vars)
+void	hkey_iter(int key_code, t_vars *vars)
 {
 	if (key_code == KEY_PLU)
-		vars->canvas.iters += 3;
+		vars->viewport.iters += 3;
 	if (key_code == KEY_MIN)
-		vars->canvas.iters -= 3;
-	get_fractol(vars);
-	mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
+		vars->viewport.iters -= 3;
+	fractal_new(vars);
 }
 
-int	ft_keyhandler(int key_code, t_vars *vars)
+void	hkey_change(t_vars *vars)
+{
+	vp_initialize(vars, (vars->viewport.fractal + 1) % 4);
+	fractal_new(vars);
+}
+
+void	hkey_change_color(t_vars *vars)
+{
+	int palette = (vars->viewport.palette + 1) % 3;
+	vars->viewport.palette = palette;
+	fractal_new(vars);
+}
+
+int	hkeys(int key_code, t_vars *vars)
 {
 	if (key_code == KEY_ESC)
-		ft_close(vars);
+		hmlx_close(vars);
 	if (key_code == KEY_UP || key_code == KEY_DOWN
 		|| key_code == KEY_LEFT || key_code == KEY_RIGHT)
-		ft_move(key_code, vars);
+		hkey_move(key_code, vars);
 	if (key_code == KEY_PLU || key_code == KEY_MIN)
-		ft_handle_iters(key_code, vars);
+		hkey_iter(key_code, vars);
+	if (key_code == KEY_Z)
+		hkey_change(vars);
+	if (key_code == KEY_X)
+		hkey_change_color(vars);
 	return (0);
 }

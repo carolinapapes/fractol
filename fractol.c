@@ -6,47 +6,47 @@
 /*   By: capapes <capapes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 16:34:21 by capapes           #+#    #+#             */
-/*   Updated: 2024/05/27 19:53:48 by capapes          ###   ########.fr       */
+/*   Updated: 2024/05/28 18:53:51 by capapes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./libs/minilibx_opengl/mlx.h"
-#include "./libs/libft/libft.h"
 #include "fractol.h"
-#include "viewport_definitions.h"
+#include "viewport_defs.h"
+#include "./libs/libft/libft.h"
 
-void	ft_colors(t_vars *vars, int x, int y, int color)
+void	fractal_put(t_vars *vars, int x, int y)
 {
-	int			i;
+	int	i;
 
-	i = is_mandelbrot_set(x, y, vars->canvas);
-	if (i == vars->canvas.iters)
-		ft_mlx_pixel_put(vars, x, y, color);
-	else
-		ft_mlx_pixel_put(vars, x, y, i % 10 * 0x00181818 + i * 1080);
+	i = fractal_get(x, y, vars->viewport);
+	if (i != vars->viewport.iters)
+		hmlx_pixel_put(vars, x, y, palette_get(vars->viewport.palette, i));
 }
 
-void	get_fractol(t_vars *vars)
+void	fractal_new(t_vars *vars)
 {
-	clear_mlx(vars);
-	vars->img.img = mlx_new_image(vars->mlx, WIN_SIZE, WIN_SIZE);
-	vars->img.addr = mlx_get_data_addr(vars->img.img, &(vars->img.bpp), &(vars->img.l_len), &(vars->img.endian));
-	ft_iterate_viewport(ft_colors, 0x00FFFFFF, vars);
+	hmlx_img_blank(vars);
+	vp_iterate(fractal_put, vars);
+	mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
 	return ;
 }
 
-
-int	main(void)
+int	main(int argc, char **argv)
 {
-	t_vars		vars;
+	t_vars			vars;
 
-	if (initializate_mlx(&vars))
+	if (argc == 1 || argc > 4)
+		return (fr_msg_error_args(), 1);
+	ft_parse_args(argc, argv, &vars);
+	if (vars.viewport.fractal == -1)
+		return (fr_msg_error_args(), 1);
+	if (hmlx_initializate(&vars))
 		return (1);
-	ft_initialize_canvas(&vars);
-	get_fractol(&vars);
-	mlx_put_image_to_window(vars.mlx, vars.win, vars.img.img, 0, 0);
-	mlx_key_hook(vars.win, ft_keyhandler, &vars);
-	mlx_hook(vars.win, 17, 0, ft_close_mlx, &vars);
-	mlx_mouse_hook(vars.win, ft_mouse_handler, &vars);
+	vp_initialize(&vars, vars.viewport.fractal);
+	fractal_new(&vars);
+	mlx_key_hook(vars.win, hkeys, &vars);
+	mlx_hook(vars.win, 17, 0, hmlx_close, &vars);
+	mlx_mouse_hook(vars.win, hmouse_scroll, &vars);
 	mlx_loop(vars.mlx);
 }
