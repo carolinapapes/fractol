@@ -26,7 +26,10 @@ typedef struct s_viewport
 	int			fractal;
 	int			background;
 	int			palette;
-	int			julia_var;
+	double		julia_var_x;
+	double		julia_var_y;
+	double		julia_sin_x;
+	double		julia_sin_y;
 	int			(*fn)(double *y0, double *x0, double *y, double *x);
 }	t_viewport;
 

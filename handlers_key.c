@@ -50,7 +50,9 @@ void	hkey_change(t_vars *vars)
 
 void	hkey_change_color(t_vars *vars)
 {
-	int palette = (vars->viewport.palette + 1) % 3;
+	int	palette;
+	
+	palette = (vars->viewport.palette + 1) % 3;
 	vars->viewport.palette = palette;
 	fractal_new(vars);
 }

@@ -14,7 +14,7 @@
 
 # define VIEWPORT_DEFS_H
 
-# define WIN_SIZE 1200
+# define WIN_SIZE 600
 # define MAX_ITER 150
 # define ORIGIN 0.5 * WIN_SIZE
 # define PIXEL_SIZE 4. / WIN_SIZE

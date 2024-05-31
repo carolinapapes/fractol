@@ -12,6 +12,7 @@
 
 #include "fractol.h"
 #include "math.h"
+#include "viewport_defs.h"
 
 int	eq_mandelbrot(double *y0, double *x0, double *y, double *x)
 {
@@ -27,8 +28,6 @@ int	eq_julia(double *y0, double *x0, double *y, double *x)
 {
 	double	aux;
 
-	*x0 = -0.7;
-	*y0 = 0.27015;
 	aux = *x * *x - *y * *y + *x0;
 	*y = 2 * *x * *y + *y0;
 	*x = aux;
@@ -49,8 +48,6 @@ int	eq_julia_sin(double *y0, double *x0, double *y, double *x)
 {
 	double	aux;
 
-	*x0 = 1.0;
-	*y0 = 0.2;
 	aux = sin(*x) * cosh(*y) + *y0;
 	*x = cos(*x) * sinh(*y) + *x0;
 	*y = aux;
@@ -63,10 +60,23 @@ int	fractal_get(double x0, double y0, t_viewport viewport)
 	double	y;
 	int		i;
 
-	x0 = x0 * viewport.pixel_size + viewport.origin_x;
-	y0 = y0 * viewport.pixel_size - viewport.origin_y;
-	x = x0;
-	y = y0;
+	x = x0 * viewport.pixel_size + viewport.origin_x;
+	y = y0 * viewport.pixel_size - viewport.origin_y;
+	if (viewport.fractal == MANDELBROT || viewport.fractal == MANDELBAR)
+	{
+		x0 = x;
+		y0 = y;
+	}
+	if (viewport.fractal == JULIA)
+	{
+		x0 = viewport.julia_var_x;
+		y0 = viewport.julia_var_y;
+	}
+	if (viewport.fractal == JULIA_SIN)
+	{
+		x0 = viewport.julia_sin_x;
+		y0 = viewport.julia_sin_y;
+	}
 	i = 0;
 	while ((viewport.fn)(&y0, &x0, &y, &x) && ++i < viewport.iters)
 		;
